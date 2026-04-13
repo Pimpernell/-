@@ -17,8 +17,6 @@ data3 = pd.read_excel('meal_order_detail.xlsx',sheet_name='meal_order_detail3')
 data = pd.concat([data1,data2,data3],axis=0)  #按照行进行拼接数据
 # data.head(5)
 data.dropna(axis=1,inplace=True) #按照列删除na列，并且修改源数据data
-data
-data.info()
 
 #频数统计，什么菜最受欢迎（对菜名进行频数统计，取最大前10名）
 dishes_count = data['dishes_name'].value_counts()[:10]
