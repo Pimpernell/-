@@ -22,4 +22,4 @@
 <img width="2451" height="1299" alt="image" src="https://github.com/user-attachments/assets/d6b4b036-918c-43eb-baf1-b3eceb1e4c2f" />
 
 操作视频
-<video src="进销存出入库管理系统" controls width="2451" height="1299"></video>
+<video src="https://github.com/Pimpernell/-/blob/Excel-Warehouse-System-Branch/%E8%BF%9B%E9%94%80%E5%AD%98%E5%87%BA%E5%85%A5%E5%BA%93%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F/%E8%BF%9B%E9%94%80%E5%AD%98%E5%87%BA%E5%85%A5%E5%BA%93%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F~3.mp4" controls width="2451" height="1299"></video>
