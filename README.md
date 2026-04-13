@@ -186,18 +186,18 @@ with pd.ExcelWriter(filepath, engine="openpyxl") as writer:
     
 print("✅ 文件导出成功！")
 ```
-#导出的excel数据，在powerBI中，进行做日报和月报，方便进行数据分析以及数据汇报。
+# 导出的excel数据，在powerBI中，进行做日报和月报，方便进行数据分析以及数据汇报。
 
-###模型关系
+### 模型关系
 <img width="1989" height="1218" alt="image" src="https://github.com/user-attachments/assets/fbdefb45-bb9b-4942-b6bc-4de3f85d7c01" />
 
-###日报
+### 日报
 <img width="2202" height="1230" alt="image" src="https://github.com/user-attachments/assets/268b6473-224b-475e-bec5-458bd6d10717" />
 
-###月报
+### 月报
 <img width="2199" height="1233" alt="image" src="https://github.com/user-attachments/assets/0ac70a2f-ecbf-47d5-ae0d-2033ba2e314b" />
 
-###Power BI 看板配套 DAX 公式全集
+### Power BI 看板配套 DAX 公式全集
 1. 核心指标
 ```python
 当月销售额(元) =  SUM('原始数据'[total_amounts])
