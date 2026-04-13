@@ -27,8 +27,11 @@ dishes_count.plot(kind="bar",fontsize=16)
 for x,y in enumerate(dishes_count):
     print(x,y)
     plt.text(x,y+3,y,ha="center",fontsize=12)
-<img width="864" height="869" alt="image" src="https://github.com/user-attachments/assets/9e4fc6f1-e062-42ed-a73a-aacf83138fd6" />
 
+
+!<img width="864" height="869" alt="image" src="https://github.com/user-attachments/assets/9e4fc6f1-e062-42ed-a73a-aacf83138fd6" />
+
+```python
 #订单点菜的种类最多（）
 data_group = data['order_id'].value_counts()[:10]
 data_group.plot(kind="bar",fontsize=16,color=['r','m','b','y','g'])
@@ -37,7 +40,7 @@ plt.xlabel('订单ID',fontsize=16)
 plt.ylabel('点菜种类',fontsize=16)
 #8月份餐厅点单点菜种类前10名，平均点菜25个菜品
 
-<img width="957" height="719" alt="image" src="https://github.com/user-attachments/assets/97ab9df2-596c-4262-b3a1-1cab16559520" />
+!<img width="957" height="719" alt="image" src="https://github.com/user-attachments/assets/97ab9df2-596c-4262-b3a1-1cab16559520" />
 
 
 #订单ID点菜数量Top10（分组order_id,counts求和，排序，前十）
