@@ -308,3 +308,8 @@ DIVIDE(
 - 五、Power BI 看板配套 DAX 公式全集
 - 六、下月落地执行计划    ---下月计划
 - 七、总结
+
+<img width="2559" height="1521" alt="image" src="https://github.com/user-attachments/assets/a51d171e-4a47-4d9c-b461-dce401dfaf38" />
+<img width="2559" height="1527" alt="image" src="https://github.com/user-attachments/assets/98674d9d-f331-4342-9ae2-019929dadb84" />
+
+
