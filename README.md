@@ -186,7 +186,71 @@ with pd.ExcelWriter(filepath, engine="openpyxl") as writer:
     
 print("✅ 文件导出成功！")
 ```
+#导出的excel数据，在powerBI中，进行做日报和月报，方便进行数据分析以及数据汇报。
 
+###模型关系
+<img width="1989" height="1218" alt="image" src="https://github.com/user-attachments/assets/fbdefb45-bb9b-4942-b6bc-4de3f85d7c01" />
 
+###日报
+<img width="2202" height="1230" alt="image" src="https://github.com/user-attachments/assets/268b6473-224b-475e-bec5-458bd6d10717" />
 
+###月报
+<img width="2199" height="1233" alt="image" src="https://github.com/user-attachments/assets/0ac70a2f-ecbf-47d5-ae0d-2033ba2e314b" />
 
+###Power BI 看板配套 DAX 公式全集
+1. 核心指标
+```python
+当月销售额(元) =  SUM('原始数据'[total_amounts])
+当月订单总数 = DISTINCTCOUNT('原始数据'[order_id])
+当月客单价_按订单 = 
+VAR TotalSales = [当月销售额(元)]       
+VAR OrderCnt = DISTINCTCOUNT('原始数据'[order_id])  
+RETURN
+DIVIDE(TotalSales, OrderCnt, 0)
+当月达成率 = DIVIDE([当月销售额(元)],[当月目标值],0)
+```
+
+2.营业时段（计算列）
+```python
+营业时段 = 
+VAR HourNum = SELECTEDVALUE('原始数据'[hour])
+RETURN
+IF(
+    HourNum >= 10 && HourNum < 17, "午市",
+    IF(HourNum >= 17 && HourNum < 23, "晚市",
+     "其他时段"
+    )
+)
+```
+
+3. 时段销售额
+```python
+销售额_午市 = 
+CALCULATE([当月销售额(元)],FILTER('原始数据',HOUR('原始数据'[time])>=10&&HOUR('原始数据'[time])<=14))
+销售额_晚市 = 
+CALCULATE([当月销售额(元)],FILTER('原始数据',HOUR('原始数据'[time])>=17&&HOUR('原始数据'[time])<=22))    
+午市占比 = 
+DIVIDE(
+    [销售额_午市],
+    [销售额_午市] + [销售额_晚市],
+    0
+)         
+晚市占比 = 
+DIVIDE(
+    [销售额_晚市],
+    [销售额_午市] + [销售额_晚市],
+    0
+)
+```
+
+4.日期维度（日期表）
+```python
+销售额_上旬 = CALCULATE([当月销售额(元)],FILTER('原始数据',DAY('原始数据'[day])<=10&&DAY('原始数据'[day])>0))
+销售额_中旬 = CALCULATE([当月销售额(元)],FILTER('原始数据',DAY('原始数据'[day])<=20&&DAY('原始数据'[day])>10))
+销售额_下旬 = CALCULATE([当月销售额(元)],FILTER('原始数据',DAY('原始数据'[day])>=20)) 
+```
+5. 点菜量相关
+ ```python
+总菜量 = SUM('原始数据'[dishes_name])
+日均点菜量 = DIVIDE([总菜量],DISTINCTCOUNT('原始数据'[weekdayzh])) 
+```
