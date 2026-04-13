@@ -198,43 +198,80 @@ print("✅ 文件导出成功！")
 <img width="2199" height="1233" alt="image" src="https://github.com/user-attachments/assets/0ac70a2f-ecbf-47d5-ae0d-2033ba2e314b" />
 
 ### Power BI 看板配套 DAX 公式全集
-1. 核心指标
+#### 日度量值仓库
+1、基础指标
 ```python
-当月销售额(元) =  SUM('原始数据'[total_amounts])
+当日销售额（元） = SUM('原始数据'[total_amounts])
+当日订单数 = DISTINCTCOUNT('原始数据'[order_id])
+客单价（元） = DIVIDE([当日销售额（元）],[当日订单数])
+销售金额排名 = RANKX(ALLSELECTED('原始数据'[dishes_name]), [当日销售额（元）], ,DESC,DENSE)
+
+```
+2.同比昨日
+```python
+昨日销售额 = CALCULATE([当日销售额（元）],ALL('原始数据'), DATEADD('原始数据'[datetime], -1, DAY))
+销售额同比昨日差额 = [当日销售额（元）] - [昨日销售额]
+销售额同比昨日% = DIVIDE([销售额同比昨日差额],[昨日销售额],0)
+
+昨日订单数 = CALCULATE([当日订单数],ALL('原始数据'), DATEADD('原始数据'[datetime], -1, DAY))
+订单数同比昨日差额 = [当日订单数] - [昨日订单数]
+订单数同比昨日% = DIVIDE([订单数同比昨日差额],[昨日订单数],0)
+```
+3.时段
+```python
+午市订单数 = CALCULATE([当日订单数],FILTER('原始数据',HOUR('原始数据'[time])>=10&&HOUR('原始数据'[time])<=14))
+午市销售额 = CALCULATE([当日销售额（元）],FILTER('原始数据',HOUR('原始数据'[time])>=10&&HOUR('原始数据'[time])<=14))
+
+晚市订单数 = CALCULATE([当日订单数],FILTER('原始数据',HOUR('原始数据'[time])>=17&&HOUR('原始数据'[time])<=23))
+晚市销售额 = CALCULATE([当日销售额（元）],FILTER('原始数据',HOUR('原始数据'[time])>=17&&HOUR('原始数据'[time])<=22))
+
+菜品晚市销售额占比 = 
+DIVIDE(
+    -- 分子：该菜品午市销售额（纯度量值判断时段）
+   CALCULATE([当日销售额（元）],FILTER('原始数据',HOUR('原始数据'[time])>=17&&HOUR('原始数据'[time])<=23)),
+    -- 分母：该菜品总销售额
+    [当日销售额（元）],
+    0
+)
+菜品午市销售额占比 = 
+DIVIDE(
+    -- 分子：该菜品午市销售额（纯度量值判断时段）
+   CALCULATE([当日销售额（元）],FILTER('原始数据',HOUR('原始数据'[time])>=10&&HOUR('原始数据'[time])<=14)),
+    -- 分母：该菜品总销售额
+    [当日销售额（元）],
+    0
+)
+
+```
+
+   #### 月度量值仓库
+   1.基础指标
+```python
+当月销售额(元) = SUM('原始数据'[total_amounts])
 当月订单总数 = DISTINCTCOUNT('原始数据'[order_id])
 当月客单价_按订单 = 
-VAR TotalSales = [当月销售额(元)]       
-VAR OrderCnt = DISTINCTCOUNT('原始数据'[order_id])  
+VAR TotalSales = [当月销售额(元)]        // 你已有的总销售度量
+VAR OrderCnt = DISTINCTCOUNT('原始数据'[order_id])  // 统计不重复订单数
 RETURN
 DIVIDE(TotalSales, OrderCnt, 0)
 当月达成率 = DIVIDE([当月销售额(元)],[当月目标值],0)
+当月差额 = [当月目标值] - [当月销售额(元)]
+当月目标值 = 500000
+日均点菜量 = DIVIDE([总菜量],DISTINCTCOUNT('原始数据'[weekdayzh]))
 ```
 
-2.营业时段（计算列）
-```python
-营业时段 = 
-VAR HourNum = SELECTEDVALUE('原始数据'[hour])
-RETURN
-IF(
-    HourNum >= 10 && HourNum < 17, "午市",
-    IF(HourNum >= 17 && HourNum < 23, "晚市",
-     "其他时段"
-    )
-)
-```
-
-3. 时段销售额
+2. 时段销售额
 ```python
 销售额_午市 = 
 CALCULATE([当月销售额(元)],FILTER('原始数据',HOUR('原始数据'[time])>=10&&HOUR('原始数据'[time])<=14))
 销售额_晚市 = 
-CALCULATE([当月销售额(元)],FILTER('原始数据',HOUR('原始数据'[time])>=17&&HOUR('原始数据'[time])<=22))    
+CALCULATE([当月销售额(元)],FILTER('原始数据',HOUR('原始数据'[time])>=17&&HOUR('原始数据'[time])<=22))  
 午市占比 = 
 DIVIDE(
     [销售额_午市],
     [销售额_午市] + [销售额_晚市],
     0
-)         
+)        
 晚市占比 = 
 DIVIDE(
     [销售额_晚市],
@@ -242,15 +279,32 @@ DIVIDE(
     0
 )
 ```
-
-4.日期维度（日期表）
+3.日期维度（日期表）
 ```python
 销售额_上旬 = CALCULATE([当月销售额(元)],FILTER('原始数据',DAY('原始数据'[day])<=10&&DAY('原始数据'[day])>0))
 销售额_中旬 = CALCULATE([当月销售额(元)],FILTER('原始数据',DAY('原始数据'[day])<=20&&DAY('原始数据'[day])>10))
 销售额_下旬 = CALCULATE([当月销售额(元)],FILTER('原始数据',DAY('原始数据'[day])>=20)) 
 ```
-5. 点菜量相关
+4. 点菜量相关
  ```python
 总菜量 = SUM('原始数据'[dishes_name])
 日均点菜量 = DIVIDE([总菜量],DISTINCTCOUNT('原始数据'[weekdayzh])) 
 ```
+#### 在制作看板中遇到的问题
+1、日期格式一直展示数据形式，影响图表制作，解决方法是在数据视图中选中总表中的日期列，手动进行调整格式，
+2、星期图表的中文排序不对的问题，选中中文的星期字段，在列工具中选择排序按钮，选择一个根据某个字段进行排序。
+<img width="2559" height="1530" alt="image" src="https://github.com/user-attachments/assets/c521be21-b792-4f21-a4c1-ae14b94ca16f" />
+3、在powerBI中的原始数据表中增加了一列，更新数据报错的问题，选择【数据视图】-【转换数据】打开powerQuery选择关联的表，右击鼠标，取消【包含在报表刷新中】，关掉弹窗，进行数据刷新之后，再重复上面的步骤，勾选上【包含在报表刷新中】关闭弹框，再进行数据刷新一遍就能解决。
+<img width="2559" height="966" alt="image" src="https://github.com/user-attachments/assets/73daca77-e118-418b-8da9-77193795b552" />
+<img width="1963" height="1324" alt="image" src="https://github.com/user-attachments/assets/3fd55013-72e7-4594-956f-58bdc1dbce96" />
+
+
+### 经营分析报告
+月度分析报告结构
+一、核心经营指标概览   ---列出核心指标数据
+二、多维度数据分析     ---根据各个维度活动什么结论
+三、核心问题诊断       ---列出异常点和不足的地方
+四、经营优化落地方案    ---根据问题，列出解决方案
+五、Power BI 看板配套 DAX 公式全集
+六、下月落地执行计划    ---下月计划
+七、总结
