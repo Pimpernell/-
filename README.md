@@ -19,7 +19,7 @@ data = pd.concat([data1,data2,data3],axis=0)  #按照行进行拼接数据
 # data.head(5)
 data.dropna(axis=1,inplace=True) #按照列删除na列，并且修改源数据data
 ```
-#频数统计，什么菜最受欢迎（对菜名进行频数统计，取最大前10名）
+### 频数统计，什么菜最受欢迎（对菜名进行频数统计，取最大前10名）
 ```python
 dishes_count = data['dishes_name'].value_counts()[:10]
 #3数据可视化matplotlib
@@ -32,7 +32,7 @@ for x,y in enumerate(dishes_count):
 ```
 <img width="864" height="869" alt="image" src="https://github.com/user-attachments/assets/9e4fc6f1-e062-42ed-a73a-aacf83138fd6" />
 
-#订单点菜的种类最多（）
+### 订单点菜的种类最多（）
 ```python
 data_group = data['order_id'].value_counts()[:10]
 data_group.plot(kind="bar",fontsize=16,color=['r','m','b','y','g'])
@@ -43,7 +43,7 @@ plt.ylabel('点菜种类',fontsize=16)
 ```
 <img width="957" height="719" alt="image" src="https://github.com/user-attachments/assets/97ab9df2-596c-4262-b3a1-1cab16559520" />
 
-#订单ID点菜数量Top10（分组order_id,counts求和，排序，前十）
+### 订单ID点菜数量Top10（分组order_id,counts求和，排序，前十）
 ```python
 data['total_amounts'] = data['counts']*data['amounts'] #统计单道菜消费总额
 dataGroup = data[['order_id','counts','amounts','total_amounts']].groupby(by="order_id")
@@ -57,7 +57,7 @@ plt.ylabel('点菜数量')
 ```
 <img width="912" height="732" alt="image" src="https://github.com/user-attachments/assets/9dc12980-3a58-4578-b4e9-b0ee1c85188b" />
 
-#哪个订单ID吃的钱最多（排序）
+### 哪个订单ID吃的钱最多（排序）
 ```python
 sort_total_amounts = Group_sum.sort_values(by="total_amounts",ascending=False)
 sort_total_amounts['total_amounts'][:10].plot(kind="bar")
@@ -68,7 +68,7 @@ plt.title('消费金额前10')
 <img width="909" height="717" alt="image" src="https://github.com/user-attachments/assets/c663c69e-3004-480e-9086-dea551d08f97" />
 
 
-#哪个订单ID平均消费最贵
+### 哪个订单ID平均消费最贵
 ```python
 Group_sum['average'] = Group_sum['total_amounts']/Group_sum['counts']
 sort_average = Group_sum.sort_values(by="average",ascending=False)
@@ -82,7 +82,7 @@ sort_average
 <img width="891" height="711" alt="image" src="https://github.com/user-attachments/assets/a3b0ecb6-2df9-4e08-9812-c9a37fba81b0" />
 
 
-#一天当中什么时间段，点菜量比较集中（hour）
+### 一天当中什么时间段，点菜量比较集中（hour）
 ```python
 data['hourcount'] = 1
 data['time'] = pd.to_datetime(data['place_order_time'])
@@ -95,7 +95,7 @@ plt.ylabel('点菜数量')
 ```
 <img width="906" height="702" alt="image" src="https://github.com/user-attachments/assets/35a5739b-346a-4503-b021-ed468ddc48e6" />
 
-#哪一天订餐数量最多
+### 哪一天订餐数量最多
 ```python
 data['daycount'] = 1
 data['day']=data['time'].map(lambda x:x.day)
@@ -113,7 +113,7 @@ plt.ylabel('点菜数量')
 ```
 <img width="918" height="695" alt="image" src="https://github.com/user-attachments/assets/fa8480ab-2218-46ca-a7a0-ec2cb9f2094f" />
 
-#查看星期几人数最多，订餐数最多，映射数据到星期
+### 查看星期几人数最多，订餐数最多，映射数据到星期
 ```python
 data['weekcount'] = 1
 week_map = {
@@ -147,7 +147,7 @@ gp_by_hour.plot(kind="bar")
 ```
 <img width="1328" height="567" alt="image" src="https://github.com/user-attachments/assets/32bbabea-292a-465a-ab88-759558caba2a" />
 
-# 讲分好数据进行单独的工作表存储，合并到一个excel中进行导出。
+### 将数据进行单独的工作表存储，合并到一个excel中进行导出。
 ```python
 df_week = data.groupby(['weekday','weekdayzh']).count()['weekcount'].reset_index(name="星期统计量")
 df_hour = gp_by_hour.reset_index(name="小时统计量")
