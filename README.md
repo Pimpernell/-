@@ -1,6 +1,7 @@
 餐饮店铺销售数据分析
 1、首选拿到数据 python进行数据
 
+```python
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
