@@ -28,7 +28,7 @@ for x,y in enumerate(dishes_count):
     print(x,y)
     plt.text(x,y+3,y,ha="center",fontsize=12)
 
-#图片
+```
 !<img width="864" height="869" alt="image" src="https://github.com/user-attachments/assets/9e4fc6f1-e062-42ed-a73a-aacf83138fd6" />
 
 ```python
