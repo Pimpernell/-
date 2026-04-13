@@ -22,4 +22,4 @@
 <img width="2451" height="1299" alt="image" src="https://github.com/user-attachments/assets/d6b4b036-918c-43eb-baf1-b3eceb1e4c2f" />
 
 操作视频
-<video src="你的视频地址.mp4" controls width="600"></video>
+<video src="进销存出入库管理系统.mp4" controls width="800"></video>
