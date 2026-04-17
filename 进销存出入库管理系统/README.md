@@ -143,8 +143,9 @@ function 圆角矩形2_ClickReset()
 =SUMIFS(出入库明细!$M:$M,出入库明细!$F:$F,$N$3,出入库明细!$D:$D,">="&$P$4,出入库明细!$D:$D,"<="&$R$4)-SUMIFS(出入库明细!$P:$P,出入库明细!$F:$F,$N$3,出入库明细!$D:$D,">="&$P$4,出入库明细!$D:$D,"<="&$R$4)
 ```
 
-#### 名称管理器
+#### 名称管理器 
 <img width="999" height="798" alt="image" src="https://github.com/user-attachments/assets/bd700089-f621-41e4-94b6-f6f1f3673d4c" />
-#### 数据有效性
+
+#### 数据有效性 
 <img width="557" height="599" alt="image" src="https://github.com/user-attachments/assets/54cb21c9-0e91-4305-a0b9-649d8db0b31e" />
 
